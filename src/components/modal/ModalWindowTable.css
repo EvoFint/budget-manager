@@ -1,0 +1,18 @@
+.backdrop {
+    position: fixed;
+    background-color: rgba(0,0,0,0.3);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 50px;
+}
+
+.modal {
+    all: initial;
+    display: block;
+    background-color: #fff;
+    margin: 5% 20%;
+    padding: 30px;
+    border-radius: 5px;
+}
