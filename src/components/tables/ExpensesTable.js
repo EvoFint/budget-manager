@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { AddButton } from "./AddButton";
+import Moment from 'moment';
 
 export class ExpensesTable extends Component {
     constructor(props) {
@@ -8,7 +9,15 @@ export class ExpensesTable extends Component {
         this.state = {
             data: {
                 title: "расход"
-            }
+            },
+            idExpense: null,
+            titleExpense: null,
+            dateExpense: null,
+            sumExpense: null,
+            error: null,
+            name: null,
+            items: [],
+            isLoaded: false
         };
         this.toggleState = this.toggleState.bind(this);
     }
@@ -17,8 +26,55 @@ export class ExpensesTable extends Component {
         this.props.toggleState(this.state.data);
     };
 
+    componentDidMount(){
+        // fetch('/api/showexpense')
+        //     .then(response => response.json())
+        //     .then(result => {
+        //         this.setState({
+        //             // idExpense: result.id,
+        //             // titleExpense: result.title,
+        //             // dateExpense: result.date,
+        //             // sumExpense: result.sum
+        //         },
+        //     },
+        //     (error) => {
+        //         this.setState ({
+        //             error
+        //         });
+        //     }
+        //     )
+        fetch('/api/users')
+            .then(res => res.json())
+            .then((result) => {
+                this.setState({
+                    isLoaded: true,
+                    items: result
+                });
+            },
+                (error) => {
+                this.setState({
+                   isLoaded: true,
+                   error
+                });
+                }
+            )
+    }
+
     render() {
-        return(
+        // const {error, idExpense, titleExpense, dateExpense, sumExpense} = this.state;
+
+        // if(error) {
+        //     return <div>Ошибка: {error.message}</div>
+        // } else {
+        //     var dateFormatted = Moment(dateExpense).format("YYYY-MM-DD");
+        // }
+        const {error, isLoaded, items} = this.state;
+        if(error) {
+            return <div>Error: {error.message}</div>
+        }else if (!isLoaded) {
+            return <div>Loading...</div>
+        } else {
+            return(
                 <div className='col'>
                     <div className="row">
                         <div className="col">
@@ -37,7 +93,7 @@ export class ExpensesTable extends Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <th scope="row"></th>
+                            <th scope="row">{items}</th>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -51,6 +107,8 @@ export class ExpensesTable extends Component {
                         </tbody>
                     </table>
                 </div>
-        )
+            )
+        }
+
     }
 }
